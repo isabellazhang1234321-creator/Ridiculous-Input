@@ -1,0 +1,47 @@
+<head>
+<title>Natural Hourglass Volume</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+<svg id="hourglass" viewBox="0 0 200 300">
+  <defs>
+    <!-- cut -->
+    <clipPath id="topClip">
+      <polygon points="35,20 165,20 100,140"/>
+    </clipPath>
+    <clipPath id="bottomClip">
+      <polygon points="35,260 165,260 100,140"/>
+    </clipPath>
+  </defs>
+
+  <!-- edge -->
+  <polygon id="hourglassPolygon" points="35,20 165,20 110,140 165,260 35,260 90,140"/>
+
+  <!-- liquid -->
+  <polygon id="topLiquid" points="35,140 35,140 165,140 165,140" clip-path="url(#topClip)"/>
+
+ 
+  <polygon id="bottomLiquid" points="35,260 35,260 165,260 165,260" clip-path="url(#bottomClip)"/>
+
+  <!-- flowing sand -->
+  <rect id="stream" x="98" y="138" width="4" height="13"/>
+</svg>
+
+<div id="volumeBar">
+  <div id="volumeFill"></div>
+</div>
+
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+
+
+
+<div class="label">Click to adjust volume</div>
+
+<audio id="audio" src="Soft.Start.Alarm.mp3" loop></audio>
