@@ -1,0 +1,79 @@
+// element
+const topLiquid = document.getElementById("topLiquid");
+const bottomLiquid = document.getElementById("bottomLiquid");
+const stream = document.getElementById("stream");
+const volumeFill = document.getElementById("volumeFill");
+const hourglass = document.getElementById("hourglass");
+
+// animation
+let duration = 2000; 
+let running = true;
+let startTime = null;
+let progress = 0;
+
+
+const topMaxHeight = 60;
+const bottomMaxHeight = 120;
+
+// loop
+function animate(timestamp){
+  if(!startTime) startTime = timestamp;
+  let elapsed = timestamp - startTime;
+  progress = Math.min(elapsed / duration, 1);
+
+  updateVisual(progress);
+
+  if(progress < 1 && running){
+    requestAnimationFrame(animate);
+  } else {
+    running = false;
+    stream.style.opacity = 0;
+  }
+}
+
+// update
+function updateVisual(p){
+  // top liquid
+  let topY = 140 - topMaxHeight * (1 - p);
+  topLiquid.setAttribute("points", `35,${topY} 35,140 165,140 165,${topY}`);
+
+  // bottom liquid
+  let bottomY = 260 - bottomMaxHeight * p;
+  bottomLiquid.setAttribute("points", `35,${bottomY} 35,260 165,260 165,${bottomY}`);
+
+  // volum bar
+volumeFill.style.height = (p * 100) + "%";
+
+  // audio
+const audio = document.getElementById("audio");
+
+// try play
+audio.play().catch(()=>{});
+
+// volum adjust
+if (audio) {
+  audio.volume = Math.max(p, 0.05); // 最低 0.05
+}
+
+
+
+  // flow sand anime
+  stream.style.opacity = running ? 1 : 0;
+  stream.setAttribute("height", 10 + 5 * Math.sin(p * Math.PI * 8));
+}
+
+// stop or reset
+hourglass.addEventListener("click", () => {
+  if(running){
+    running = false;
+    stream.style.opacity = 0;
+  } else {
+    startTime = null;
+    progress = 0;
+    running = true;
+    requestAnimationFrame(animate);
+  }
+});
+
+// initial anime
+requestAnimationFrame(animate);
